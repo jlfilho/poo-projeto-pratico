@@ -29,22 +29,7 @@ public class LocacaoLongoPeriodoDaoJDBC extends StaticLocacaoDao {
 		super(conn);
 	}
 
-	@Override
-	public void excluirPorId(Integer id) {
-		PreparedStatement st = null;
-
-		try {
-			st = super.getConn().prepareStatement("DELETE FROM locacao WHERE id = ?");
-
-			st.setInt(1, id);
-
-			st.executeUpdate();
-		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		} finally {
-			DB.closeStatement(st);
-		}
-	}
+	
 
 	@Override
 	public Locacao buscarPorId(Integer id) {

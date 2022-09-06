@@ -6,12 +6,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import db.DB;
 import db.DbException;
+import model.entities.Carro;
+import model.entities.Cliente;
 import model.entities.Locacao;
 import model.entities.LocacaoDiaria;
 import model.entities.LocacaoLongoPeriodo;
+import model.entities.dao.CarroDao;
+import model.entities.dao.ClienteDao;
+import model.entities.dao.DaoFactory;
 import model.entities.dao.LocacaoDao;
 
 public abstract class StaticLocacaoDao implements LocacaoDao {
@@ -93,6 +100,51 @@ public abstract class StaticLocacaoDao implements LocacaoDao {
 		}
 	}
 
+	@Override
+	public void excluirPorId(Integer id) {
+		PreparedStatement st = null;
+
+		try {
+			st = getConn().prepareStatement("DELETE FROM locacao WHERE id = ?");
+
+			st.setInt(1, id);
+
+			st.executeUpdate();
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+		}
+	}
+
+	@Override
+	public Locacao buscarPorId(Integer id) {
+		CarroDao carroDao = DaoFactory.createCarroDao();
+		ClienteDao clienteDao = DaoFactory.createClienteDao();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = getConn().prepareStatement("SELECT locacao.* " + "FROM locacao WHERE id = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				Locacao locacao = instantiateLocacao(rs);
+				Carro carro = carroDao.buscarPorId(rs.getInt("Carro_id"));
+				locacao.setCarro(carro);
+				Cliente cliente = clienteDao.buscarPorId(rs.getInt("Cliente_id"));
+				locacao.setCliente(cliente);
+				return locacao;
+			}
+			return null;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
 	private void setLocacaoService(PreparedStatement st, LocacaoDiaria locacao) throws SQLException {
 		st.setTimestamp(1, Timestamp.valueOf(locacao.getDataRetirada()));
 		st.setTimestamp(2, Timestamp.valueOf(locacao.getDataDevolucao()));
@@ -109,21 +161,29 @@ public abstract class StaticLocacaoDao implements LocacaoDao {
 		st.setInt(5, locacao.getCarro().getId());
 	}
 
-	@Override
-	public void excluirPorId(Integer id) {
-		PreparedStatement st = null;
+	private Locacao instantiateLocacao(ResultSet rs) throws SQLException {
+		Integer id = rs.getInt("id");
+		LocalDateTime dataRetirada = rs.getTimestamp("dataRetirada").toLocalDateTime();
+		LocalDateTime dataDevolucao = rs.getTimestamp("dataDevolucao").toLocalDateTime();
+		Long diasPrevistoDevolucao = rs.getLong("diasPrevistoDevolucao");
+		Double porcentagemDesconto = rs.getDouble("porcentagemDesconto");
 
-		try {
-			st = getConn().prepareStatement("DELETE FROM locacao WHERE id = ?");
-
-			st.setInt(1, id);
-
-			st.executeUpdate();
-		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		} finally {
-			DB.closeStatement(st);
+		if (Duration.between(dataRetirada, dataDevolucao).toMinutes()/(1440.0+60.0) <= 10) {
+			LocacaoDiaria locacao = new LocacaoDiaria();
+			locacao.setId(id);
+			locacao.setDataRetirada(dataRetirada);
+			locacao.setDataDevolucao(dataDevolucao);
+			locacao.setDiasPrevistoDevolucao(diasPrevistoDevolucao);
+			return locacao;
 		}
+		LocacaoLongoPeriodo locacao = new LocacaoLongoPeriodo();
+		locacao.setId(id);
+		locacao.setDataRetirada(dataRetirada);
+		locacao.setDataDevolucao(dataDevolucao);
+		locacao.setPorcentagemDesconto(porcentagemDesconto);
+		
+		return locacao;
+
 	}
 
 }

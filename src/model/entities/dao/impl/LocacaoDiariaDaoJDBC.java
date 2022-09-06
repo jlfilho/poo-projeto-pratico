@@ -32,35 +32,7 @@ public class LocacaoDiariaDaoJDBC extends StaticLocacaoDao {
 	
 
 
-	@Override
-	public Locacao buscarPorId(Integer id) {
-		CarroDao carroDao = DaoFactory.createCarroDao();
-		ClienteDao clienteDao = DaoFactory.createClienteDao();
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			st = super.getConn().prepareStatement(
-					"SELECT locacao.* "
-							+ "FROM locacao WHERE id = ?");
-			st.setInt(1, id);
-			rs = st.executeQuery();
-			if (rs.next()) {
-				Locacao locacao = instantiateLocacao(rs);
-				Carro carro = carroDao.buscarPorId(rs.getInt("Carro_id"));
-				locacao.setCarro(carro);
-				Cliente cliente = clienteDao.buscarPorId(rs.getInt("Cliente_id"));
-				locacao.setCliente(cliente);
-				return locacao;
-			}
-			return null;
-		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
-		} finally {
-			DB.closeStatement(st);
-			DB.closeResultSet(rs);
-		}
-	}
+	
  
 	@Override
 	public List<Locacao> buscarTodos() {

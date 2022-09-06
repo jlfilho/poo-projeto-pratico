@@ -102,19 +102,20 @@ public class Programa {
 
 		// Locação
 
-		Locacao locacao = new LocacaoDiaria(15, LocalDateTime.parse("2022-09-05T11:00:00"),
-				LocalDateTime.parse("2022-09-08T12:01:00"), carroDao.buscarPorId(14), clienteDao.buscarPorId(13));
-		StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDiariaDao();
-		locacaoDao.atualizar(locacao);
-		
-		locacao = new LocacaoLongoPeriodo(16, LocalDateTime.parse("2022-09-05T11:00:00"),
-				LocalDateTime.parse("2022-10-06T12:01:00"), carroDao.buscarPorId(14), clienteDao.buscarPorId(13), 0.15);
-		locacaoDao = DaoFactory.createLocacaoLongoPeriodoDao();
-		locacaoDao.atualizar(locacao);
-		
-		
-		
-		
+		/*
+		 * Locacao locacao = new LocacaoDiaria(15,
+		 * LocalDateTime.parse("2022-09-05T11:00:00"),
+		 * LocalDateTime.parse("2022-09-08T12:01:00"), carroDao.buscarPorId(14),
+		 * clienteDao.buscarPorId(13)); StaticLocacaoDao locacaoDao =
+		 * DaoFactory.createLocacaoDiariaDao(); locacaoDao.atualizar(locacao);
+		 * 
+		 * locacao = new LocacaoLongoPeriodo(16,
+		 * LocalDateTime.parse("2022-09-05T11:00:00"),
+		 * LocalDateTime.parse("2022-10-06T12:01:00"), carroDao.buscarPorId(14),
+		 * clienteDao.buscarPorId(13), 0.15); locacaoDao =
+		 * DaoFactory.createLocacaoLongoPeriodoDao(); locacaoDao.atualizar(locacao);
+		 */
+
 		// System.out.println(locacao);
 
 		/*
@@ -131,10 +132,15 @@ public class Programa {
 		 * locacaoDao.excluirPorId(4);
 		 */
 		// Buscar por id
-		/*
-		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDiariaDao(); Locacao
-		 * locacao = locacaoDao.buscarPorId(5); System.out.println(locacao);
-		 */
+
+		StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDiariaDao();
+		Locacao locacao = locacaoDao.buscarPorId(15);
+		System.out.println(locacao);
+		
+		locacao = locacaoDao.buscarPorId(16);
+		System.out.println(locacao);
+		
+		
 
 		/*
 		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDiariaDao(); for

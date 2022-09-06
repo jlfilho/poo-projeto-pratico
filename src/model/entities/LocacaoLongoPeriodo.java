@@ -15,8 +15,6 @@ public class LocacaoLongoPeriodo extends Locacao {
 		this.porcentagemDesconto = porcentagemDesconto;
 	}
 
-
-
 	public Double getPorcentagemDesconto() {
 		return porcentagemDesconto;
 	}
@@ -24,6 +22,11 @@ public class LocacaoLongoPeriodo extends Locacao {
 	public void setPorcentagemDesconto(Double porcentagemDesconto) {
 		this.porcentagemDesconto = porcentagemDesconto;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "LocacaoLongoPeriodo [porcentagemDesconto=" + porcentagemDesconto + ", toString()=" + super.toString()
+				+ "]";
+	}
 
 }
