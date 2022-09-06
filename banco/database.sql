@@ -1,0 +1,88 @@
+-- MySQL Workbench Synchronization
+-- Generated: 2022-09-03 23:11
+-- Model: New Model
+-- Version: 1.0
+-- Project: Name of the project
+-- Author: 55929
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+CREATE SCHEMA IF NOT EXISTS `locadora` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE IF NOT EXISTS `locadora`.`Categoria` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `descricao` VARCHAR(45) NULL DEFAULT NULL,
+  `precoDiaria` DOUBLE NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `locadora`.`Carro` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `modelo` VARCHAR(45) NULL DEFAULT NULL,
+  `placa` VARCHAR(10) NULL DEFAULT NULL,
+  `cor` VARCHAR(10) NULL DEFAULT NULL,
+  `ano` INT(11) NULL DEFAULT NULL,
+  `dataAquisicao` DATE NULL DEFAULT NULL,
+  `Categoria_id` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Carro_Categoria_idx` (`Categoria_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Carro_Categoria`
+    FOREIGN KEY (`Categoria_id`)
+    REFERENCES `locadora`.`Categoria` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `locadora`.`Telefone` (
+  `numero` VARCHAR(11) NULL DEFAULT NULL,
+  `Cliente_id` INT(11) NOT NULL,
+  INDEX `fk_Telefone_Cliente1_idx` (`Cliente_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Telefone_Cliente1`
+    FOREIGN KEY (`Cliente_id`)
+    REFERENCES `locadora`.`Cliente` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `locadora`.`Cliente` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  `cpf` VARCHAR(11) NULL DEFAULT NULL,
+  `email` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `locadora`.`Locacao` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `dataRetirada` DATETIME NULL DEFAULT NULL,
+  `dataDevolucao` DATETIME NULL DEFAULT NULL,
+  `diasPrevistoDevolucao` INT(11) NULL DEFAULT NULL,
+  `porcentagemDesconto` DOUBLE NULL DEFAULT NULL,
+  `Cliente_id` INT(11) NOT NULL,
+  `Carro_id` INT(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Locacao_Cliente1_idx` (`Cliente_id` ASC) VISIBLE,
+  INDEX `fk_Locacao_Carro1_idx` (`Carro_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Locacao_Cliente1`
+    FOREIGN KEY (`Cliente_id`)
+    REFERENCES `locadora`.`Cliente` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Locacao_Carro1`
+    FOREIGN KEY (`Carro_id`)
+    REFERENCES `locadora`.`Carro` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
