@@ -6,8 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import db.DB;
 import db.DbException;
@@ -146,6 +149,47 @@ public abstract class StaticLocacaoDao implements LocacaoDao {
 		}
 	}
 
+	@Override
+	public List<Locacao> buscarTodos() {
+		CarroDao carroDao = DaoFactory.createCarroDao();
+		ClienteDao clienteDao = DaoFactory.createClienteDao();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = getConn()
+					.prepareStatement("SELECT * FROM locacao ORDER BY id");
+
+			rs = st.executeQuery();
+
+			List<Locacao> locacoes = new ArrayList<>();
+			Map<Integer, Carro> mapCarro = new HashMap<>();
+			Map<Integer, Cliente> mapCliente = new HashMap<>();
+
+			while (rs.next()) {
+				Carro carro = mapCarro.get(rs.getInt("Carro_id"));
+				if (carro == null) {
+					carro = carroDao.buscarPorId(rs.getInt("Carro_id"));
+					mapCarro.put(rs.getInt("Carro_id"), carro);
+				}
+				Cliente cliente = mapCliente.get(rs.getInt("Cliente_id"));
+				if (cliente == null) {
+					cliente = clienteDao.buscarPorId(rs.getInt("Cliente_id"));
+					mapCliente.put(rs.getInt("Cliente_id"), cliente);
+				}
+				Locacao locacao = instantiateLocacao(rs);
+				locacao.setCarro(carro);
+				locacao.setCliente(cliente);
+				locacoes.add(locacao);
+			}
+			return locacoes;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
+
 	private void setLocacaoService(PreparedStatement st, LocacaoDiaria locacao) throws SQLException {
 		st.setTimestamp(1, Timestamp.valueOf(locacao.getDataRetirada()));
 		st.setTimestamp(2, Timestamp.valueOf(locacao.getDataDevolucao()));
@@ -182,7 +226,7 @@ public abstract class StaticLocacaoDao implements LocacaoDao {
 		locacao.setDataRetirada(dataRetirada);
 		locacao.setDataDevolucao(dataDevolucao);
 		locacao.setPorcentagemDesconto(porcentagemDesconto);
-		
+
 		return locacao;
 
 	}

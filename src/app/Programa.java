@@ -133,19 +133,17 @@ public class Programa {
 		 */
 		// Buscar por id
 
-		StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDiariaDao();
-		Locacao locacao = locacaoDao.buscarPorId(15);
-		System.out.println(locacao);
-		
-		locacao = locacaoDao.buscarPorId(16);
-		System.out.println(locacao);
-		
-		
-
 		/*
-		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDiariaDao(); for
-		 * (Locacao l: locacaoDao.buscarTodos()) { System.out.println(l); }
+		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDiariaDao(); Locacao
+		 * locacao = locacaoDao.buscarPorId(15); System.out.println(locacao);
+		 * 
+		 * locacao = locacaoDao.buscarPorId(16); System.out.println(locacao);
 		 */
+
+		StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDiariaDao();
+		for (Locacao l : locacaoDao.buscarTodos()) {
+			System.out.println(l);
+		}
 
 		// Locação Longa
 
