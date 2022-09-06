@@ -20,6 +20,7 @@ import model.entities.dao.CarroDao;
 import model.entities.dao.ClienteDao;
 import model.entities.dao.DaoFactory;
 import model.entities.dao.LocacaoDao;
+import model.util.TipoLocacao;
 
 public abstract class StaticLocacaoDao implements LocacaoDao {
 
@@ -168,7 +169,7 @@ public abstract class StaticLocacaoDao implements LocacaoDao {
 		Long diasPrevistoDevolucao = rs.getLong("diasPrevistoDevolucao");
 		Double porcentagemDesconto = rs.getDouble("porcentagemDesconto");
 
-		if (Duration.between(dataRetirada, dataDevolucao).toMinutes()/(1440.0+60.0) <= 10) {
+		if (TipoLocacao.isLocacaoDiaria(dataRetirada, dataDevolucao)) {
 			LocacaoDiaria locacao = new LocacaoDiaria();
 			locacao.setId(id);
 			locacao.setDataRetirada(dataRetirada);
