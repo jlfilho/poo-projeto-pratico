@@ -4,9 +4,7 @@ import db.DB;
 import model.entities.dao.impl.CarroDaoJDBC;
 import model.entities.dao.impl.CategoriaDaoJDBC;
 import model.entities.dao.impl.ClienteDaoJDBC;
-import model.entities.dao.impl.LocacaoDiariaDaoJDBC;
-import model.entities.dao.impl.LocacaoLongoPeriodoDaoJDBC;
-import model.entities.dao.impl.StaticLocacaoDao;
+import model.entities.dao.impl.LocacaoDaoJDBC;
 
 public class DaoFactory {
 	
@@ -22,12 +20,8 @@ public class DaoFactory {
 		return new ClienteDaoJDBC(DB.getConnection());
 	}
 	
-	public static StaticLocacaoDao createLocacaoDiariaDao() {
-		return new LocacaoDiariaDaoJDBC(DB.getConnection());
-	}
-	
-	public static StaticLocacaoDao createLocacaoLongoPeriodoDao() {
-		return new LocacaoLongoPeriodoDaoJDBC(DB.getConnection());
+	public static LocacaoDao createLocacaoDao() {
+		return new LocacaoDaoJDBC(DB.getConnection());
 	}
 	
 }

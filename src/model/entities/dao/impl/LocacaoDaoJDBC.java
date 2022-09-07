@@ -25,11 +25,11 @@ import model.entities.dao.DaoFactory;
 import model.entities.dao.LocacaoDao;
 import model.util.TipoLocacao;
 
-public abstract class StaticLocacaoDao implements LocacaoDao {
+public class LocacaoDaoJDBC implements LocacaoDao {
 
 	private Connection conn;
 
-	public StaticLocacaoDao(Connection conn) {
+	public LocacaoDaoJDBC(Connection conn) {
 		this.conn = conn;
 	}
 
