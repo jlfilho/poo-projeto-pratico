@@ -1,11 +1,16 @@
 package app;
 
+import java.time.LocalDateTime;
+
 import model.entities.Locacao;
+import model.entities.LocacaoDiaria;
+import model.entities.LocacaoLongoPeriodo;
 import model.entities.dao.CarroDao;
 import model.entities.dao.CategoriaDao;
 import model.entities.dao.ClienteDao;
 import model.entities.dao.DaoFactory;
 import model.entities.dao.LocacaoDao;
+import model.util.ServicoDesconto;
 
 public class Programa {
 
@@ -98,19 +103,14 @@ public class Programa {
 
 		// Locação
 
-		/*
-		 * Locacao locacao = new LocacaoDiaria(15,
-		 * LocalDateTime.parse("2022-09-05T11:00:00"),
-		 * LocalDateTime.parse("2022-09-08T12:01:00"), carroDao.buscarPorId(14),
-		 * clienteDao.buscarPorId(13)); StaticLocacaoDao locacaoDao =
-		 * DaoFactory.createLocacaoDao(); locacaoDao.atualizar(locacao);
-		 * 
-		 * locacao = new LocacaoLongoPeriodo(16,
-		 * LocalDateTime.parse("2022-09-05T11:00:00"),
-		 * LocalDateTime.parse("2022-10-06T12:01:00"), carroDao.buscarPorId(14),
-		 * clienteDao.buscarPorId(13), 0.15); locacaoDao =
-		 * DaoFactory.createLocacaoLongoPeriodoDao(); locacaoDao.atualizar(locacao);
-		 */
+		Locacao locacao = new LocacaoDiaria(null, LocalDateTime.parse("2022-09-07T00:35:00"),
+				LocalDateTime.parse("2022-09-10T01:00:00"), carroDao.buscarPorId(3), clienteDao.buscarPorId(5));
+		LocacaoDao locacaoDao = DaoFactory.createLocacaoDao();
+		locacaoDao.cadastrar(locacao);
+
+		locacao = new LocacaoLongoPeriodo(null, LocalDateTime.parse("2022-09-07T00:36:00"),
+				LocalDateTime.parse("2022-12-30T12:00:00"), carroDao.buscarPorId(8), clienteDao.buscarPorId(10));
+		locacaoDao.cadastrar(locacao);
 
 		// System.out.println(locacao);
 
@@ -130,13 +130,13 @@ public class Programa {
 		// Buscar por id
 
 		/*
-		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDao(); Locacao
-		 * locacao = locacaoDao.buscarPorId(15); System.out.println(locacao);
+		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDao(); Locacao locacao
+		 * = locacaoDao.buscarPorId(15); System.out.println(locacao);
 		 * 
 		 * locacao = locacaoDao.buscarPorId(16); System.out.println(locacao);
 		 */
 
-		LocacaoDao locacaoDao = DaoFactory.createLocacaoDao();
+		//LocacaoDao locacaoDao = DaoFactory.createLocacaoDao();
 		for (Locacao l : locacaoDao.buscarPorCliente(clienteDao.buscarPorId(13))) {
 			System.out.println(l);
 		}
@@ -170,13 +170,13 @@ public class Programa {
 
 		// Buscar por id
 		/*
-		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDao(); Locacao
-		 * locacao = locacaoDao.buscarPorId(5); System.out.println(locacao);
+		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDao(); Locacao locacao
+		 * = locacaoDao.buscarPorId(5); System.out.println(locacao);
 		 */
 
 		/*
-		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDao(); for
-		 * (Locacao l: locacaoDao.buscarTodos()) { System.out.println(l); }
+		 * StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDao(); for (Locacao l:
+		 * locacaoDao.buscarTodos()) { System.out.println(l); }
 		 */
 	}
 
