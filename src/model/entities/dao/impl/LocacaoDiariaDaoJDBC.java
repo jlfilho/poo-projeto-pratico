@@ -17,11 +17,4 @@ public class LocacaoDiariaDaoJDBC extends StaticLocacaoDao {
 		super(conn);
 	}
 
-
-	@Override
-	public List<Locacao> buscarPorCliente(ClienteDao cliente) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

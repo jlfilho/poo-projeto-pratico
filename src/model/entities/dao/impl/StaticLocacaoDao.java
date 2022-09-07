@@ -189,6 +189,43 @@ public abstract class StaticLocacaoDao implements LocacaoDao {
 			DB.closeResultSet(rs);
 		}
 	}
+	
+	@Override
+	public List<Locacao> buscarPorCliente(Cliente cliente) {
+		CarroDao carroDao = DaoFactory.createCarroDao();
+		ClienteDao clienteDao = DaoFactory.createClienteDao();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = getConn()
+					.prepareStatement("SELECT * FROM locacao "
+							+ "WHERE Cliente_id = ? ORDER BY id");
+			st.setInt(1, cliente.getId());
+
+			rs = st.executeQuery();
+
+			List<Locacao> locacoes = new ArrayList<>();
+			Map<Integer, Carro> mapCarro = new HashMap<>();
+
+			while (rs.next()) {
+				Carro carro = mapCarro.get(rs.getInt("Carro_id"));
+				if (carro == null) {
+					carro = carroDao.buscarPorId(rs.getInt("Carro_id"));
+					mapCarro.put(rs.getInt("Carro_id"), carro);
+				}
+				Locacao locacao = instantiateLocacao(rs);
+				locacao.setCarro(carro);
+				locacao.setCliente(cliente);
+				locacoes.add(locacao);
+			}
+			return locacoes;
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		} finally {
+			DB.closeStatement(st);
+			DB.closeResultSet(rs);
+		}
+	}
 
 	private void setLocacaoService(PreparedStatement st, LocacaoDiaria locacao) throws SQLException {
 		st.setTimestamp(1, Timestamp.valueOf(locacao.getDataRetirada()));

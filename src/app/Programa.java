@@ -141,7 +141,7 @@ public class Programa {
 		 */
 
 		StaticLocacaoDao locacaoDao = DaoFactory.createLocacaoDiariaDao();
-		for (Locacao l : locacaoDao.buscarTodos()) {
+		for (Locacao l : locacaoDao.buscarPorCliente(clienteDao.buscarPorId(13))) {
 			System.out.println(l);
 		}
 
