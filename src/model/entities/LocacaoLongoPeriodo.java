@@ -2,7 +2,7 @@ package model.entities;
 
 import java.time.LocalDateTime;
 
-import model.util.ServicoDesconto;
+import model.service.ServicoDesconto;
 import model.util.TipoLocacao;
 
 public class LocacaoLongoPeriodo extends Locacao {
@@ -28,8 +28,7 @@ public class LocacaoLongoPeriodo extends Locacao {
 
 	@Override
 	public String toString() {
-		return "LocacaoLongoPeriodo [porcentagemDesconto=" + porcentagemDesconto + ", toString()=" + super.toString()
-				+ "]";
+		return "Locação Longo Período: \nDesconto: " + porcentagemDesconto + ", \n" + super.toString();
 	}
 
 }

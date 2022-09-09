@@ -4,6 +4,8 @@ import java.math.MathContext;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import model.util.TipoLocacao;
+
 public class LocacaoDiaria extends Locacao {
 	private Long diasPrevistoDevolucao;
 	
@@ -26,13 +28,12 @@ public class LocacaoDiaria extends Locacao {
 	}
 
 	private long diasPrevistoDevolucao() {
-		return (long) Math.ceil(Duration.between(super.getDataRetirada(),super.getDataDevolucao()).toMinutes()/(1440.0+60.0));
+		return TipoLocacao.periodoEmDias(getDataRetirada(), getDataDevolucao());
 	}
 
 	@Override
 	public String toString() {
-		return "LocacaoDiaria [diasPrevistoDevolucao=" + diasPrevistoDevolucao + ", toString()=" + super.toString()
-				+ "]";
+		return "Locação Diária: \ndias Previsto Devolução: " + diasPrevistoDevolucao + ", \n" + super.toString();
 	}
 	
 	

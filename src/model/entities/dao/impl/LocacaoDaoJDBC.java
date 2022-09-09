@@ -197,6 +197,7 @@ public class LocacaoDaoJDBC implements LocacaoDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
+			cliente = clienteDao.buscarPorId(cliente.getId());
 			st = getConn()
 					.prepareStatement("SELECT * FROM locacao "
 							+ "WHERE Cliente_id = ? ORDER BY id");
@@ -206,6 +207,7 @@ public class LocacaoDaoJDBC implements LocacaoDao {
 
 			List<Locacao> locacoes = new ArrayList<>();
 			Map<Integer, Carro> mapCarro = new HashMap<>();
+			
 
 			while (rs.next()) {
 				Carro carro = mapCarro.get(rs.getInt("Carro_id"));

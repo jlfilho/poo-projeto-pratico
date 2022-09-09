@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public abstract class Locacao {
@@ -97,8 +98,9 @@ public abstract class Locacao {
 
 	@Override
 	public String toString() {
-		return "Locacao [id=" + id + ", dataRetirada=" + dataRetirada + ", dataDevolucao=" + dataDevolucao + ", carro="
-				+ carro + ", cliente=" + cliente + "]";
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+		return "Locação: \nid: " + id + ", Retirada: " + dataRetirada.format(dtf) + ", Devolução: " + dataDevolucao.format(dtf) + ", \n"
+				+ carro + "\n" + cliente;
 	}
 	
 	

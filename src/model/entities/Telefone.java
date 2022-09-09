@@ -68,7 +68,7 @@ public class Telefone {
 
 	@Override
 	public String toString() {
-		return "Telefone [id=" + id + ", numero=" + numero + "]";
+		return "Telefone: numero: " + numero;
 	}
 
 }

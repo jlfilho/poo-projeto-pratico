@@ -10,7 +10,7 @@ import model.entities.dao.CategoriaDao;
 import model.entities.dao.ClienteDao;
 import model.entities.dao.DaoFactory;
 import model.entities.dao.LocacaoDao;
-import model.util.ServicoDesconto;
+import model.service.ServicoDesconto;
 
 public class Programa {
 

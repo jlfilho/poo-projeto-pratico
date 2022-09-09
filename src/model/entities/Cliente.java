@@ -9,13 +9,16 @@ public class Cliente {
 	private String nome;
 	private String cpf;
 	private String email;
-	
+
 	private List<Telefone> telefones = new ArrayList<>();
 	private List<Locacao> locacoes = new ArrayList<>();
-	
-	
+
 	public Cliente() {
-		
+
+	}
+
+	public Cliente(Integer id) {
+		this.id = id;
 	}
 
 	public Cliente(Integer id, String nome, String cpf, String email) {
@@ -57,7 +60,6 @@ public class Cliente {
 		this.email = email;
 	}
 
-	
 	public void addTelefone(Telefone telefone) {
 		telefone.setCliente(this);
 		telefones.add(telefone);
@@ -66,7 +68,7 @@ public class Cliente {
 	public List<Telefone> getTelefones() {
 		return telefones;
 	}
-	
+
 	public void addLocacao(Locacao locacao) {
 		locacao.setCliente(this);
 		locacoes.add(locacao);
@@ -95,10 +97,7 @@ public class Cliente {
 
 	@Override
 	public String toString() {
-		return "Cliente [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", email=" + email + "]";
+		return "Cliente: \nid: " + id + ", nome: " + nome + ", cpf: " + cpf + ", \nemail: " + email;
 	}
-	
-	
-	
 
 }

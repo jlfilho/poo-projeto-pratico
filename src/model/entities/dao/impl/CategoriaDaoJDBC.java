@@ -113,13 +113,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 		}
 	}
 
-	private Categoria instantiateCategoria(ResultSet rs) throws SQLException {
-		Categoria categoria = new Categoria();
-		categoria.setId(rs.getInt("id"));
-		categoria.setDescricao(rs.getString("descricao"));
-		categoria.setPrecoDiaria(rs.getDouble("precoDiaria"));
-		return categoria;
-	}
+	
 
 	@Override
 	public List<Categoria> buscarTodos() {
@@ -127,7 +121,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 		ResultSet rs = null;
 
 		try {
-			st = conn.prepareStatement("SELECT * FROM categoria ORDER BY descricao");
+			st = conn.prepareStatement("SELECT * FROM categoria ORDER BY id");
 			rs = st.executeQuery();
 
 			List<Categoria> list = new ArrayList<>();
@@ -148,6 +142,14 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 			DB.closeStatement(st);
 			DB.closeResultSet(rs);
 		}
+	}
+	
+	private Categoria instantiateCategoria(ResultSet rs) throws SQLException {
+		Categoria categoria = new Categoria();
+		categoria.setId(rs.getInt("id"));
+		categoria.setDescricao(rs.getString("descricao"));
+		categoria.setPrecoDiaria(rs.getDouble("precoDiaria"));
+		return categoria;
 	}
 
 }

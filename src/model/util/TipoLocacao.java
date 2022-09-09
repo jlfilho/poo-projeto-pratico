@@ -3,6 +3,8 @@ package model.util;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
+import model.entities.Locacao;
+
 public class TipoLocacao {
 	private static final int DIAS_LONGO_PERIODO = 10;
 	
@@ -22,7 +24,11 @@ public class TipoLocacao {
 	}
 	
 	public static Long periodoEmDias(LocalDateTime dataRetirada, LocalDateTime dataDevolucao) {
-		return (long) Math.ceil(Duration.between(dataRetirada, dataDevolucao).toMinutes()/(1440.0+60.0));
+		return (long) Math.ceil(Duration.between(dataRetirada, dataDevolucao).toMinutes()/(24.0*60.0));
+	}
+	
+	public static Long periodoEmDias(Locacao locacao) {
+		return periodoEmDias(locacao.getDataRetirada(),locacao.getDataDevolucao());
 	}
 	
 

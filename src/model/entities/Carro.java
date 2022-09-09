@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,14 +15,17 @@ public class Carro {
 	private Cor cor;
 	private Integer ano;
 	private LocalDate dataAquisicao;
-	
+
 	private Categoria categoria;
 	private List<Locacao> locacoes = new ArrayList<>();
-	
+
 	public Carro() {
-		
+
 	}
 
+	public Carro(Integer id) {
+		this.id = id;
+	}
 
 	public Carro(Integer id, String modelo, String placa, Cor cor, Integer ano, LocalDate dataAquisicao,
 			Categoria categoria) {
@@ -33,8 +37,6 @@ public class Carro {
 		this.dataAquisicao = dataAquisicao;
 		this.categoria = categoria;
 	}
-
-
 
 	public Integer getId() {
 		return id;
@@ -83,8 +85,7 @@ public class Carro {
 	public void setDataAquisicao(LocalDate dataAquisicao) {
 		this.dataAquisicao = dataAquisicao;
 	}
-	
-	
+
 	public Categoria getCategoria() {
 		return categoria;
 	}
@@ -102,12 +103,10 @@ public class Carro {
 		return locacoes;
 	}
 
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -121,16 +120,12 @@ public class Carro {
 		return Objects.equals(id, other.id);
 	}
 
-
 	@Override
 	public String toString() {
-		return "Carro [id=" + id + ", modelo=" + modelo + ", placa=" + placa + ", cor=" + cor + ", ano=" + ano
-				+ ", dataAquisicao=" + dataAquisicao + ", categoria=" + categoria.getDescricao() + "]";
+		return "Carro: \nid= " + id + ", modelo: " + modelo + ", placa: " + placa + ", \ncor: " + cor + ", ano: " + ano
+				+ ", \nAquisição: " + dataAquisicao.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+				+ ", \nCategoria: " + categoria.getDescricao()
+				+ ", \nDiária: " + String.format("R$ %.2f", categoria.getPrecoDiaria()) ;
 	}
-	
-	
-	
-	
-	
-	
+
 }

@@ -123,20 +123,37 @@ public class ClienteDaoJDBC implements ClienteDao {
 	// TODO
 	public void excluirPorId(Integer id) {
 		PreparedStatement st = null;
+		PreparedStatement st2 = null;
 
 		try {
 			conn.setAutoCommit(false);
 
-			st = conn.prepareStatement("DELETE FROM categoria WHERE Id = ?");
+			Cliente c = buscarPorId(id);
+			st2 = conn.prepareStatement("DELETE FROM telefone WHERE id = ?");
+
+			for (Telefone t : c.getTelefones()) {
+				st2.setInt(1, t.getId());
+				st2.addBatch();
+			}
+			st2.executeBatch();
+
+			st = conn.prepareStatement("DELETE FROM cliente WHERE id = ?");
 
 			st.setInt(1, id);
 
 			st.executeUpdate();
+
 			conn.commit();
 		} catch (SQLException e) {
-			throw new DbException(e.getMessage());
+			try {
+				conn.rollback();
+				throw new DbIntegrityException("A transação fez rollback! Devido ao erro " + e.getMessage());
+			} catch (SQLException e1) {
+				throw new DbIntegrityException("Erro ao fazer rollback! Devido ao erro " + e1.getMessage());
+			}
 		} finally {
 			DB.closeStatement(st);
+			DB.closeStatement(st2);
 		}
 
 	}
